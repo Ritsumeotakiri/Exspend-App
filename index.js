@@ -7,15 +7,16 @@ const expenseRoutes = require('./routes/expenses');
 const app = express();
 const PORT = 5000;
 
-// ✅ Middleware
+//  Middleware
 app.use(cors());
-app.use(express.json()); // 👈 this parses JSON bodies
+// parses JSON bodies
+app.use(express.json()); 
 
-// ✅ Routes
+//  Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/expenses', expenseRoutes);
 
-// ✅ Server Start
+//  Server Start
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
