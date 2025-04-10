@@ -1,15 +1,23 @@
 const jwt = require('jsonwebtoken');
-const SECRET_KEY = 'your_jwt_secret_key'; // Use .env in prod
+const SECRET_KEY = '_jwt_secret_key'; 
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1]; // Bearer <token>
+  const token = authHeader && authHeader.split(' ')[1]; 
 
-  if (!token) return res.sendStatus(401); // Unauthorized
+  if (!token) {
+    console.log('❌ No token provided');
+    return res.status(401).json({ error: 'Unauthorized - No token' });
+  }
 
   jwt.verify(token, SECRET_KEY, (err, user) => {
-    if (err) return res.sendStatus(403); // Forbidden
-    req.user = user; // Contains userId
+    if (err) {
+      console.log('❌ Token verification failed:', err.message);
+      return res.status(403).json({ error: 'Forbidden - Invalid token' });
+    }
+
+    req.user = user; 
+    console.log('✅ Token verified. User:', user);
     next();
   });
 }
